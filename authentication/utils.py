@@ -9,3 +9,5 @@ class AppTokenGenerator(PasswordResetTokenGenerator):
 
 
 token_generator = AppTokenGenerator()
+
+#token_generator and account_activation_token are same
