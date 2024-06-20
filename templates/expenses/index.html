@@ -25,9 +25,8 @@
   </div>
 
   <div class="container">
-    {% include 'partials/_messages.html' %} 
-
-    {% comment %} {% if expenses.count %} {% endcomment %}
+    {% include 'partials/_messages.html' %}
+     {% if expenses.count %}
 
     <div class="row">
       <div class="col-md-8"></div>
@@ -39,8 +38,6 @@
       </div>
     </div>
 <div class="app-table">
-    <div class="container">
-        {% if expenses.count %}
 
   <table class="table table-stripped table-hover">
     <thead>
@@ -54,33 +51,57 @@
     </thead>
 
     <tbody>
-      {% for expense in page_obj %}
+      {% for expense in page_obj%}
       <tr>
         <td>{{expense.amount}}</td>
         <td>{{expense.category}}</td>
         <td>{{expense.description}}</td>
         <td>{{expense.date}}</td>
-        <td>
-            <a
-              href="{% url 'expense-edit' expense.id  %}"
-              class="btn btn-secondary btn-sm"
-              >Edit</a
-            >
-          </td>
 
+        <td>
+          <a
+            href="{% url 'expense-edit' expense.id  %}"
+            class="btn btn-secondary btn-sm"
+            >Edit</a
+          >
+        </td>
       </tr>
 
       {% endfor %}
     </tbody>
   </table>
+</div>
+
+<p class="no-results" style="display: none;">No results </p>
+    <div class="table-output">
 
 
-  <div class="pagination-container">
+      <table class="table table-stripped table-hover">
+        <thead>
+          <tr>
+            <th>Amount ({{currency}})</th>
+            <th>Category</th>
+            <th>Description</th>
+            <th>Date</th>
+            <th></th>
+          </tr>
+        </thead>
+
+        <tbody  class="table-body">
+
+
+        </tbody>
+      </table>
+    </div>
+
+
+
+
+    <div class="pagination-container">
     <div class="">
       Showing page {{page_obj.number}} of {{ page_obj.paginator.num_pages }}
     </div>
     <ul class="pagination align-right float-right mr-auto">
-
       {% if page_obj.has_previous %}
       <li {% if page_obj.number == 1 %} class="page-item active" {% endif %}><a class="page-link" href="?page=1">&laquo; 1</a></li>
       <li class="page-item"> <a class="page-link" href="?page={{ page_obj.previous_page_number }}">Previous</a></li>
@@ -91,30 +112,19 @@
       <li class="page-item"> <a class="page-link" href="?page={{ page_obj.paginator.num_pages }}">{{ page_obj.paginator.num_pages}} &raquo;</a></li>
       {% endif %}
 
-    </ul>
-    </div>
-    </div>
-    </div>
 
-
-
-
-
-
-  {% endif %}
-
-
+      </ul>
+    {% endif %}
+  </div>
 </div>
 </div>
 
+<script src="{% static 'js/searchExpenses.js' %}"></script>
 
 
 
 
-   
-
-
-
+</script>
 
 
 
@@ -163,77 +173,5 @@
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-{% comment %} {% extends 'base.html' %}
-
-
-{% block content%}
-
-<div class="div">
-    {% include 'partials/_messages.html' %}
-    <div class="container mt-4">
-        <nav aria-label="breadcrumb">
-          <ol class="breadcrumb">
-            <li class="breadcrumb-item">
-              <a href="">Expenses</a>
-            </li>
-            <li class="breadcrumb-item active" aria-current="page">My Expenses</li>
-          </ol>
-        </nav>     
-</div>
-</div>
-
-    
-    {% endblock %} {% endcomment %}
-    
-    
 
 
