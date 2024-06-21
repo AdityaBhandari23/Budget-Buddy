@@ -1,7 +1,15 @@
 from django.contrib import admin
-from .models import *
-
+from .models import Expense, Category
 # Register your models here.
 
-admin.site.register(Expense)
+
+class ExpenseAdmin(admin.ModelAdmin):
+    list_display = ('amount', 'description', 'owner', 'category', 'date',)
+    search_fields = ('description', 'category', 'date',)
+
+    list_per_page = 5
+    #these three are inbuilt functions
+
+
+admin.site.register(Expense, ExpenseAdmin)
 admin.site.register(Category)
