@@ -15,7 +15,19 @@ from django.urls import reverse
 from .utils import token_generator
 from django.contrib import auth
 from django.contrib.auth.tokens import PasswordResetTokenGenerator
+
+import threading
+
 # Create your views here.
+
+class EmailThread(threading.Thread):
+    
+    def __init__(self,email):
+        self.email=email
+        threading.Thread.__init__(self)
+
+    def run(self):
+        self.email.send(fail_silently=False)    
 
 class EmailvalidationView(View):
     def post(self,request):
@@ -94,7 +106,8 @@ class RegistrationView(View):
                     'adityagoapala5@gmail.com',
                     [email],
                 )#check this template on django documentation
-                email.send(fail_silently=False)
+                EmailThread(email).start()
+                # messages.success(request, "Account Successfully Created")
                     
             
         # messages.success(request,"success")   
@@ -200,7 +213,7 @@ class RequestPasswordReset(View):
                 'noreply@semicolon.com',
                 [email],
             )
-            email.send(fail_silently=False)
+            EmailThread(email).start()
         
         
         messages.success(request,'We have sent you an email..........')#when user is not registered
