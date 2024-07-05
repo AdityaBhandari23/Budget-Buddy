@@ -8,7 +8,7 @@ const emailFeedBackArea=document.querySelector(".emailFeedBackArea");
 const submitBtn=document.querySelector(".submit-btn")
 
 emailField.addEventListener("keyup", (e)=>{
-    console.log("7E2T7T");
+    // console.log("7E2T7T");
     const emailVal=e.target.value;
     
     emailField.classList.remove("is-invalid");
@@ -34,7 +34,7 @@ emailField.addEventListener("keyup", (e)=>{
 
 
 usernameField.addEventListener("keyup",(e)=>{
-    console.log('8888',8888)
+    // console.log('8888',8888)
     const usernameVal=e.target.value;
 
     usernameField.classList.remove("is-invalid");
