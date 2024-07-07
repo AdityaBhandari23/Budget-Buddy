@@ -122,18 +122,23 @@ class VerificationView(View):
         try:
             id=force_str(urlsafe_base64_decode(uidb64))
             user=User.objects.get(pk=id)
+            print("User retrieved:", user) 
             
-            if not token_generator.token.check_token(user,token):
+            # if not token_generator.token.check_token(user,token): 
+            if not token_generator.check_token(user,token):   
+                print("Invalid token")
                 return redirect('login'+'?message='+'User already activated')
             
             if user.is_active:
+                print("User is already active") 
                 return redirect('login')
             user.is_active=True
             user.save()
-            
+            print("User is_active set to True")
             messages.success(request,'Account Activated')
             return redirect('login') 
         except Exception as ex:
+            
             pass
         
         return redirect('login')    
