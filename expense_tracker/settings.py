@@ -139,11 +139,11 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
 
-
 from django.contrib import messages
 MESSAGE_TAGS={
     messages.ERROR:'danger'
 }
+
 
 #EMAIL STUFF
 EMAIL_HOST='smtp.gmail.com'
@@ -152,3 +152,6 @@ EMAIL_USE_TLS=True
 DEFAULT_FROM_EMAIL= 'jeemainbyaditya@gmail.com'  ##'adityagoapala5@gmail.com'
 EMAIL_PORT=587
 EMAIL_HOST_PASSWORD='kdkk akxj rulc vcfo'
+
+
+

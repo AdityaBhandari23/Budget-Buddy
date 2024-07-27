@@ -11,6 +11,8 @@ import json
 from django.http import JsonResponse
 
 import datetime
+
+from django.db.models import Sum
 # Create your views here.
 
 
@@ -120,6 +122,8 @@ def delete_income(request, id):
     return redirect('income')
 
 
+
+
 def income_source_summary(request):
     todays_date=datetime.date.today()
     six_months_ago=todays_date - datetime.timedelta(days=30*6)
@@ -147,5 +151,75 @@ def income_source_summary(request):
 
     return JsonResponse({'income_source_data':finalrep},safe=False)
 
+
+def top_sources_summary(request):
+    todays_date = datetime.date.today()
+    six_months_ago = todays_date - datetime.timedelta(days=30 * 6)
+    incomes = UserIncome.objects.filter(
+        owner=request.user,
+        date__gte=six_months_ago, date__lte=todays_date
+    )
+    source_data = {}
+
+    def get_source(income):
+        return income.source
+
+    category_list = list(set(map(get_source, incomes)))
+
+    def get_income_source_amount(source):
+        amount = 0
+        filtered_by_source = incomes.filter(source=source)
+
+        for item in filtered_by_source:
+            amount += item.amount
+        return amount
+
+    for x in category_list:
+        source_data[x] = get_income_source_amount(x)
+
+    sorted_source_data = dict(sorted(source_data.items(), key=lambda item: item[1], reverse=True))
+    top_sources = list(sorted_source_data.keys())[:5]
+    top_amounts = list(sorted_source_data.values())[:5]
+
+    return JsonResponse({'top_sources': top_sources, 'top_amounts': top_amounts})
+
+def total_income_over_time(request):
+    today = datetime.date.today()
+    months = []
+    total_incomes = []
+
+    for i in range(12):
+        month = today.replace(day=1) - datetime.timedelta(days=i*30)
+        months.append(month.strftime("%b %y"))
+        total_incomes.append(UserIncome.objects.filter(date__year=month.year, date__month=month.month).aggregate(total=Sum('amount'))['total'] or 0)
+
+    return JsonResponse({'months': months, 'total_incomes': total_incomes})
+
+
+
+
+def get_current_monthly_income(request):
+    current_date = datetime.date.today()
+    current_month = current_date.month
+    current_year = current_date.year
+
+    incomes = UserIncome.objects.filter(owner=request.user, date__year=current_year, date__month=current_month)
+    monthly_income = incomes.aggregate(total=Sum('amount'))['total'] or 0
+    return monthly_income
+
+def get_current_annual_income(request):
+    current_date = datetime.date.today()
+    current_year = current_date.year
+
+    incomes = UserIncome.objects.filter(owner=request.user, date__year=current_year)
+    annual_income = incomes.aggregate(total=Sum('amount'))['total'] or 0
+    return annual_income
+
 def income_stats_view(request):
-    return render(request, 'income/stats.html')
+    monthly_income = get_current_monthly_income(request)
+    annual_income = get_current_annual_income(request)
+    stats_data = {
+        'monthly_income': monthly_income,
+        'annual_income': annual_income,
+    }
+    return render(request, 'income/stats.html', stats_data)

@@ -11,6 +11,10 @@ urlpatterns = [
     
     path('expense_category_summary',views.expense_category_summary,name='expense_category_summary'),
     
-    path('stats',views.stats_view,name="stats")
+    path('top_expenses_category_summary',views.top_expenses_category_summary,name='top_expenses_category_summary'),
     
+    path('total_expense_over_time',views.total_expense_over_time,name='total_expense_over_time'),
+    
+    path('stats',views.stats_view,name="stats")
+   
 ]
