@@ -151,7 +151,7 @@ EMAIL_HOST_USER='jeemainbyaditya@gmail.com'
 EMAIL_USE_TLS=True
 DEFAULT_FROM_EMAIL= 'jeemainbyaditya@gmail.com'  ##'adityagoapala5@gmail.com'
 EMAIL_PORT=587
-EMAIL_HOST_PASSWORD='kdkk akxj rulc vcfo'
+EMAIL_HOST_PASSWORD=''
 
 
 
